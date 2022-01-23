@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const compression = require('compression');
 const errorhandler = require('errorhandler');
+const cookieSession = require("cookie-session");
 const routes = require('./server/routes/routes');
 
 const app = express();
@@ -23,6 +24,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, 'public')));
+
+app.use(
+  cookieSession({
+    name: "bezkoder-session",
+    secret: "COOKIE_SECRET", // should use as secret environment variable
+    httpOnly: true
+  })
+);
 
 app.use('/', routes);
 
